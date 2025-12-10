@@ -119,7 +119,12 @@ def train_agent(
         metrics = env.get_performance_metrics()
         episode_rewards.append(episode_reward)
         episode_returns.append(metrics['total_return'])
-        losses.append(episode_loss / steps if steps > 0 else 0)
+        
+        # Only track losses when training actually happened
+        if steps > 0 and len(agent.memory) >= agent.batch_size:
+            losses.append(episode_loss / steps)
+        else:
+            losses.append(0.0)
         
         # Validation
         if episode % 10 == 0:
@@ -187,7 +192,7 @@ def plot_training_results(rewards, returns, val_returns, losses, model_name):
     
     # Returns
     axes[0, 1].plot(returns, label='Train')
-    if val_returns:
+    if val_returns and len(val_returns) > 0:
         val_episodes = np.arange(0, len(returns), len(returns) // len(val_returns))[:len(val_returns)]
         axes[0, 1].plot(val_episodes, val_returns, label='Validation')
     axes[0, 1].set_title('Portfolio Returns')
@@ -212,6 +217,9 @@ def plot_training_results(rewards, returns, val_returns, losses, model_name):
         axes[1, 1].set_xlabel('Episode')
         axes[1, 1].set_ylabel('MA Return')
         axes[1, 1].grid(True)
+    else:
+        axes[1, 1].text(0.5, 0.5, 'Not enough data for MA', 
+                       ha='center', va='center', transform=axes[1, 1].transAxes)
     
     plt.tight_layout()
     plot_path = os.path.join(config.LOGS_DIR, f"{model_name}_training.png")

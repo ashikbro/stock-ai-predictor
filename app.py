@@ -156,7 +156,14 @@ def plot_portfolio_performance(portfolio_history: list, df: pd.DataFrame):
         row=2, col=1
     )
     
-    holdings_value = portfolio_df['holdings'] * df.iloc[portfolio_df['step']]['Close'].values
+    # Calculate holdings value for each step
+    holdings_value = []
+    for idx, row in portfolio_df.iterrows():
+        step = row['step']
+        holdings = row['holdings']
+        price = df.loc[step, 'Close']
+        holdings_value.append(holdings * price)
+    
     fig.add_trace(
         go.Scatter(x=portfolio_df['step'], y=holdings_value, name='Holdings Value', fill='tonexty'),
         row=2, col=1

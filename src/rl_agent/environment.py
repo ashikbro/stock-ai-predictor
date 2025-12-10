@@ -166,8 +166,8 @@ class StockTradingEnv(gym.Env):
         self.current_step += 1
         done = self.current_step >= len(self.df) - 1
         
-        # Get next observation
-        obs = self._get_observation() if not done else self._get_observation()
+        # Get next observation (or last observation if done)
+        obs = self._get_observation()
         
         info = {
             'portfolio_value': self.total_asset_value,
