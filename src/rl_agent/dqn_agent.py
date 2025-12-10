@@ -233,7 +233,14 @@ class DQNAgent:
         Args:
             filepath: Path to load model from
         """
-        checkpoint = torch.load(filepath, map_location=self.device)
+        # Use weights_only=True for security (requires PyTorch >= 2.6.0)
+        # This prevents arbitrary code execution during deserialization
+        try:
+            checkpoint = torch.load(filepath, map_location=self.device, weights_only=True)
+        except TypeError:
+            # Fallback for older PyTorch versions
+            checkpoint = torch.load(filepath, map_location=self.device)
+        
         self.policy_net.load_state_dict(checkpoint['policy_net_state_dict'])
         self.target_net.load_state_dict(checkpoint['target_net_state_dict'])
         self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
