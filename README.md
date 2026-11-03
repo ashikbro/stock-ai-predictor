@@ -82,3 +82,17 @@ total return, maximum drawdown, annualized volatility, and trade count.
 ## Development
 
 Run the regression tests with `PYTHONPATH=src pytest`.
+
+## Research dashboard
+
+The `web/` directory contains a dependency-free browser showcase for the
+deterministic baseline. It includes a reproducible demo price series, live
+short/long moving-average controls, modeled fee and slippage, equity and
+drawdown metrics, and the project's research guardrails.
+
+```sh
+python -m http.server 8000 --directory web
+```
+
+Open <http://localhost:8000>. The dashboard is educational and uses synthetic
+demo data; it is not a trading interface or a source of financial advice.
