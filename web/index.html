@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A transparent, cost-aware stock strategy research dashboard.">
+    <title>Stock AI Predictor · Research Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#"><span class="brand-mark">↗</span><span>Stock AI <b>Predictor</b></span></a>
+      <span class="mode"><i></i> Research mode · local demo data</span>
+    </header>
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Transparent strategy research</p>
+          <h1>Test ideas.<br><em>Respect uncertainty.</em></h1>
+          <p class="lede">A deterministic moving-average baseline with explicit fees, slippage, and drawdown—not financial advice.</p>
+          <div class="hero-actions"><a class="button primary" href="#dashboard">Explore the baseline ↓</a><a class="button ghost" href="https://github.com/ashikbro/stock-ai-predictor">View source ↗</a></div>
+        </div>
+        <div class="hero-card"><div class="sparkline" id="hero-chart"></div><div class="hero-card-foot"><span>Demo equity curve</span><strong id="hero-return">—</strong></div></div>
+      </section>
+
+      <section class="dashboard" id="dashboard">
+        <div class="section-head"><div><p class="eyebrow">Baseline experiment</p><h2>Moving average · long / flat</h2><p>Signals use only prices available at each bar. Trades execute at the close with configurable costs.</p></div><div class="dataset">DEMO-OHLCV-01 <span>● reproducible</span></div></div>
+        <div class="controls">
+          <label>Short window <output id="short-output">5</output><input id="short" type="range" min="2" max="12" value="5"></label>
+          <label>Long window <output id="long-output">20</output><input id="long" type="range" min="12" max="35" value="20"></label>
+          <label>Fee + slippage <output id="cost-output">0.15%</output><input id="cost" type="range" min="0" max="50" value="15"></label>
+          <button class="button primary run" id="run">Run experiment</button>
+        </div>
+        <div class="metrics">
+          <article><span>Total return</span><strong id="return">—</strong><small>after modeled costs</small></article>
+          <article><span>Max drawdown</span><strong id="drawdown">—</strong><small>peak-to-trough loss</small></article>
+          <article><span>Annualized volatility</span><strong id="volatility">—</strong><small>252-session estimate</small></article>
+          <article><span>Trade count</span><strong id="trades">—</strong><small>entries and exits</small></article>
+        </div>
+        <div class="chart-card"><div class="chart-title"><div><h3>Portfolio equity</h3><span>Starting capital: $10,000 · 120 demo sessions</span></div><div class="chart-legend"><i class="equity-key"></i> Strategy <i class="benchmark-key"></i> Buy &amp; hold</div></div><svg id="chart" role="img" aria-label="Portfolio equity chart"></svg></div>
+        <div class="signal-strip"><div><span class="signal-dot on"></span><strong id="position">Flat</strong><small>Current position</small></div><div><span class="signal-dot"></span><strong id="date">—</strong><small>Last evaluated session</small></div><div><span class="signal-dot"></span><strong id="bars">120</strong><small>Validated bars</small></div></div>
+      </section>
+
+      <section class="principles">
+        <div><p class="eyebrow">Research guardrails</p><h2>Good research is honest about what it cannot prove.</h2></div>
+        <div class="principle-grid"><article><b>01</b><h3>No look-ahead</h3><p>Signals are calculated from historical closes only. Evaluation remains chronological.</p></article><article><b>02</b><h3>Costs are explicit</h3><p>Fees and slippage are applied at entry and exit, so friction is not hidden in the result.</p></article><article><b>03</b><h3>Results are not advice</h3><p>Historical or synthetic performance cannot predict future returns or suitability.</p></article></div>
+      </section>
+    </main>
+    <footer><span>Stock AI Predictor</span><span>Experimental research tool · not financial advice</span></footer>
+    <script src="app.js"></script>
+  </body>
+</html>
